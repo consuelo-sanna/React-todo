@@ -12,35 +12,47 @@ class App extends Component {
     todos:[]
   }
 
+  
   componentDidMount(){
-    axios.get('https://jsonplaceholder.typicode.com/todos?_limit=10')
+    axios.get('https://afternoon-thicket-04912.herokuapp.com/todoData.html')
       .then(res => this.setState({ todos: res.data }))
   }
-
+ 
   markComplete = (id) => { 
-    this.setState ({ todos:this.state.todos.map(todo => {
-      if(todo.id === id){
-        todo.completed = !todo.completed
-      }
-      return todo;
-    }) });
+    axios.put('https://afternoon-thicket-04912.herokuapp.com/todoData.html',{
+      data: id
+    })
+    .then(res => console.log(res.data));
+      this.setState ({ todos:this.state.todos.map(todo => {
+        if(todo.id === id){
+          todo.completed = !todo.completed
+        }
+        return todo;
+      }) });
   }
 
   delTodo = (id) => {
-    axios.delete(`https://jsonplaceholder.typicode.com/todos/${id}`)
+    axios.delete(`https://afternoon-thicket-04912.herokuapp.com/todoData.html`, {
+      data: id
+    })
     .then ( res => this.setState({ todos: [...this.state.todos.filter(todo => todo.id !== id)] }));
   }
     
   
 
   addTodo = (title) => {
-    axios.post('https://jsonplaceholder.typicode.com/todos', {
+    console.log(this.state.todos);
+    axios.post('https://afternoon-thicket-04912.herokuapp.com/todoData.html', {
       title: title,
       completed: false
     })
-      .then(res => this.setState({ todos: [...this.state.todos, res.data] }));
+    .then(res => {
+      res.data.id = this.state.todos.length + 1;
+      this.setState({ todos: [...this.state.todos, res.data] })});
     
   }
+
+ 
   
   render(){
     return (
