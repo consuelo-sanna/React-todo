@@ -7,7 +7,6 @@ import AddTodo from './components/AddTodo';
 import axios from 'axios';
 
 class App extends Component {
-
   state= {
     todos:[]
   }
